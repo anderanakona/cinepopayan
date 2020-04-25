@@ -5,7 +5,7 @@
 -- Dumped from database version 11.7
 -- Dumped by pg_dump version 11.7
 
--- Started on 2020-03-19 14:16:57
+-- Started on 2020-04-24 18:34:33
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -78,20 +78,15 @@ ALTER TABLE ONLY public.pelicula ALTER COLUMN id_pelicula SET DEFAULT nextval('p
 -- Data for Name: pelicula; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.pelicula(
-	id_pelicula, titulo_pelicula, descripcion_pelicula, tipo_pelicula, imagen_foto, raptin)
-	VALUES (1, 'El tarzan', 'El hombre mono', 'Serie', 'cafe.png', 5);
-	
-INSERT INTO public.pelicula(
-	id_pelicula, titulo_pelicula, descripcion_pelicula, tipo_pelicula, imagen_foto, raptin)
-	VALUES (2, 'El coco', 'El hombre coco', 'Serie', 'campesino1.JPG', 3);
+
+
 --
 -- TOC entry 2818 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: pelicula_id_pelicula_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pelicula_id_pelicula_seq', 3, true);
+SELECT pg_catalog.setval('public.pelicula_id_pelicula_seq', 239, true);
 
 
 --
@@ -103,7 +98,7 @@ ALTER TABLE ONLY public.pelicula
     ADD CONSTRAINT pelicula_pkey PRIMARY KEY (id_pelicula);
 
 
--- Completed on 2020-03-19 14:16:57
+-- Completed on 2020-04-24 18:34:36
 
 --
 -- PostgreSQL database dump complete
