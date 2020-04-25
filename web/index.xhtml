@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        
+        
+          <h:form id="frm" enctype="multipart/form-data">
+            <p:panel id="panel" header="Nuevo estreno" style="background-color: #77CD2C  ">
+                    <p:growl id="me" showDetail="true" />
+                <h:panelGrid columns="3" cellpadding="5">
+                   
+                    <p:outputLabel  for="titulo_pelicula1" value="Titulo:" />
+                    <p:inputText id="titulo_pelicula1" value="#{peliculaBean.titulo_pelicula}" label="Titulo" required="true" >
+                        <f:validateLength minimum="2" />
+                        <p:ajax update=":frm:msgtitulo" event="keyup" />
+                    </p:inputText>
+                    <p:message for="titulo_pelicula1" id="msgtitulo" display="icon" />
+
+                    <p:outputLabel for="descripcion1" value="Descripcion:" />
+                    <p:inputText id="descripcion1" value="#{peliculaBean.descripcion_pelicula}" label="Descripcion1" required="true">
+                        <f:validateLength minimum="2" />
+                        <p:ajax update=":frm:msgDescripcion" event="keyup" />
+                    </p:inputText>
+                    <p:message for="descripcion1" id="msgDescripcion" display="icon" />
+
+
+                    <p:outputLabel for="tipo" value="Tipo Estreno:" />   <p:selectOneMenu id="tipo" value="#{peliculaBean.tipo_pelicula}" style="width:125px">
+                        <f:selectItem itemLabel="Serie" itemValue="Serie" />
+                        <f:selectItem itemLabel="Pelicula" itemValue="Pelicula" />
+
+                    </p:selectOneMenu>
+                    <br/>
+                    
+                </h:panelGrid>
+                
+                 <p:fileUpload value="#{peliculaBean.file}" mode="simple"/>
+                 
+                
+                  <h:commandButton value="Guardar" action="#{peliculaBean.insertar()}" />
+
+            </p:panel>
+        </h:form>
+         buscarPor titulo
+
+        <h:form id="form_buscar">
+            <p:outputLabel value="Titulo:" for="titulo_peliculabuscar" />
+            <p:inputText id="titulo_peliculabuscar" value="#{peliculaBean.titulo_pelicula}" label="Titulo" required="true" >
+                <f:validateLength minimum="2" />
+                <p:ajax update=":form_buscar:msgtitulobuscar" event="keyup" />
+            </p:inputText>
+            <p:message for="titulo_peliculabuscar" id="msgtitulobuscar" display="icon" />
+
+            <h:commandButton value="Buscar"   action="#{peliculaBean.buscarPelicula()}" />
+
+        </h:form>
+         
+         
+         
+            <style type="text/css">
+            .logo {
+                width: 5%
+            }
+
+            .detail {
+                width: 95%;
+                padding-left: 25px;
+            }
+
+            .detail td {
+                font-size: 24px;
+            }
+
+            .ui-datascroller .ui-datascroller-item {
+                border-bottom: 1px solid #A8A8A8;
+                padding: 25px 10px;
+                /* with the exported variables from Nova and Luna Themes*/
+                border-bottom-color: #A8A8A8;
+            }
+        </style>
+        
+        
+            <h:form id="form"> 
+
+                       
+             <p:growl id="messagess" showDetail="true" />
+ 
+            
+                <p:dataScroller value="#{peliculaBean.listapelicula}" var="car" chunkSize="10">
+
+                <f:facet name="header">
+                    Lista de Estrenos  <h:commandButton id="eliminar" value="eliminar" actionListener="#{peliculaBean.eliminarPelicula()}"/>
+
+
+                </f:facet>
+
+                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                    
+                    <p:graphicImage value="imagenes/#{car.imagen}" style="height: 100px; width: 100px" /> 
+                    <p:outputPanel>
+                      <p:rating value="#{car.raptin}">
+                         
+                          <p:ajax event="rate" listener="#{car.onrate}" update=":form:messagess" />
+                     </p:rating>
+                        
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Id:" />
+                            <h:outputText value="#{car.id_pelicula}" style="font-weight: bold"/>
+
+                            <h:outputText value="Titulo:" />
+                            <h:outputText value="#{car.titulo_pelicula}" style="font-weight: bold"/>
+
+                            <h:outputText value="Descripcion:" />
+                            <h:outputText value="#{car.descripcion_pelicula}" style="font-weight: bold"/>
+                            <h:outputText value="Tipo:" />
+                            <h:outputText value="#{car.tipo_pelicula}" style="font-weight: bold"/>
+
+                            <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                                <p:selectBooleanCheckbox value="#{car.select}" itemLabel="Eliminar"/>
+
+                            </h:panelGrid>
+
+                            <p:commandLink  update=":f:carDetail" oncomplete="PF('carDialog').show()" >
+                                Ver Detalles
+                                <f:setPropertyActionListener value="#{car}" target="#{peliculaBean.selectedPel}" />
+                            </p:commandLink >
+                            
+                            <p:commandLink  update=":form_editarpel:modaleditar" oncomplete="PF('modaleditar').show()" >
+                               Actualizar
+                                <f:setPropertyActionListener value="#{car}" target="#{peliculaBean.selectedPel}" />
+                            </p:commandLink >
+                            
+                            
+                            
+
+
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:panelGrid>
+
+
+
+            </p:dataScroller>
+
+
+
+        </h:form>
+
+        
+         
+        <h:form id="f">
+
+            <p:dialog header="Estreno" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="carDetail" style="text-align:center;">
+                   
+                    <p:panelGrid  columns="2" columnClasses="label,value">
+                        <f:facet name="header">
+                            <p:graphicImage value="imagenes/#{peliculaBean.selectedPel.imagen}" style="width: 100px; height: 100px;"/> 
+                              </f:facet>
+                        
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{peliculaBean.selectedPel.id_pelicula}" />
+
+                        <h:outputText value="Titulo" />
+                        <h:outputText value="#{peliculaBean.selectedPel.titulo_pelicula}" />
+
+                        <h:outputText value="Descripcion:" />
+                        <h:outputText value="#{peliculaBean.selectedPel.descripcion_pelicula}" />
+
+                        <h:outputText value="tipo estreno:" />
+                        <h:outputText value="#{peliculaBean.selectedPel.tipo_pelicula}" />
+                    </p:panelGrid>
+                    
+                    
+                   
+                        
+                </p:outputPanel>
+            </p:dialog>
+
+        </h:form>
+
+        
+           <h:form id="form_editarpel">
+
+            <p:dialog header="Editar" widgetVar="modaleditar" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="modaleditar" style="text-align:center;">
+
+                    <p:panelGrid  columns="12">
+                        <f:facet name="header" >
+                           <p:graphicImage value="imagenes/#{peliculaBean.selectedPel.imagen}" style="width: 100px; height: 100px;"/> 
+                           </f:facet>
+
+                        <h:inputHidden value="#{peliculaBean.selectedPel.id_pelicula}"  />
+
+                        <h:outputText value="Titulo" />
+                        <h:inputText value="#{peliculaBean.selectedPel.titulo_pelicula}" required="true"/>
+
+                        <h:outputText value="Descripcion:" />
+                        <h:inputText value="#{peliculaBean.selectedPel.descripcion_pelicula}" required="true" />
+                        
+
+                        <h:outputText value="tipo estreno:" />
+                       
+                        <p:selectOneMenu id="tipo" value="#{peliculaBean.selectedPel.tipo_pelicula}" style="width:125px">
+                        <f:selectItem itemLabel="Serie" itemValue="Serie" />
+                        <f:selectItem itemLabel="Pelicula" itemValue="Pelicula" />
+
+                       </p:selectOneMenu>
+                        
+                         <h:commandButton value="Guardar" action="#{peliculaBean.actualizarPelicula()}" />
+                        
+                        
+                    </p:panelGrid>
+                    
+                </p:outputPanel>
+            </p:dialog>
+
+        </h:form>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+         
+        
+    </h:body>
+    
+</html>
+
